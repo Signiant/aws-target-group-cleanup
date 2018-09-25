@@ -2,10 +2,11 @@ import sys
 import boto3
 import argparse
 import pprint
-
+from time import sleep
 
 def remove_target_group(arn, elb_client):
     request_id = None
+    response = None
 
     try:
         response = elb_client.delete_target_group(
@@ -13,6 +14,7 @@ def remove_target_group(arn, elb_client):
         )
     except Exception as e:
         print("Error removing target group " + arn + " (" + str(e) + ")")
+        sleep(0.5) # We could be throttled so we will delay here if so...
 
     if response:
         if response['ResponseMetadata']['HTTPStatusCode'] == 200:
