@@ -71,6 +71,7 @@ def main(argv):
                         print("REMOVED (request id " + request_id + ")")
                     else:
                         print("ERROR")
+                    sleep(0.3) # try not to over-run LB api throughput
                 else:
                     print("DRYRUN,no deletion took place")
 
