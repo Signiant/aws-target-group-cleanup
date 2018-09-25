@@ -25,6 +25,7 @@ def remove_target_group(arn, elb_client):
 
 def main(argv):
     plugin_results = dict()
+    groups_removed_count = 0
 
     parser = argparse.ArgumentParser(description='Remove ALB target groups not assigned to load balancers')
     parser.add_argument('-f','--force', help='Perform the actual deletes (will run in dryrun mode by default)', action='store_true')
@@ -69,13 +70,14 @@ def main(argv):
                     request_id = remove_target_group(target_group_arn, elb_client)
                     if request_id:
                         print("REMOVED (request id " + request_id + ")")
+                        groups_removed_count += 1
                     else:
                         print("ERROR")
                     sleep(0.3) # try not to over-run LB api throughput
                 else:
                     print("DRYRUN,no deletion took place")
 
-    print "Complete"
+    print "Complete.  Removed " + str(groups_removed_count) + " orphaned target groups"
 
 if __name__ == "__main__":
    main(sys.argv[1:])
