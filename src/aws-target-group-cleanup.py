@@ -79,7 +79,7 @@ def main(argv):
                 else:
                     print("DRYRUN,no deletion took place")
 
-    print "Complete.  Removed " + str(groups_removed_count) + " orphaned target groups with prefix " + prefix
+    print "Complete.  Removed " + str(groups_removed_count) + " orphaned target groups with prefix " + prefix + " in " + str(args.region)
 
 if __name__ == "__main__":
    main(sys.argv[1:])
