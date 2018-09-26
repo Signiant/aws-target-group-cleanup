@@ -26,6 +26,7 @@ def remove_target_group(arn, elb_client):
 def main(argv):
     plugin_results = dict()
     groups_removed_count = 0
+    prefix = ""
 
     parser = argparse.ArgumentParser(description='Remove ALB target groups not assigned to load balancers')
     parser.add_argument('-f','--force', help='Perform the actual deletes (will run in dryrun mode by default)', action='store_true')
@@ -36,6 +37,7 @@ def main(argv):
 
     if args.prefix:
         print("Prefix specified - only evaluating target groups beginning with " + args.prefix)
+        prefix = args.prefix
 
     if args.force:
         print("Force flag specified - doing deletion")
@@ -55,8 +57,8 @@ def main(argv):
             target_group_load_balancers = target_group['LoadBalancerArns']
             target_group_arn = target_group['TargetGroupArn']
 
-            if args.prefix:
-                if target_group_name.startswith(args.prefix):
+            if prefix:
+                if target_group_name.startswith(prefix):
                     if not target_group_load_balancers:
                         punt = True
             else:
@@ -77,7 +79,7 @@ def main(argv):
                 else:
                     print("DRYRUN,no deletion took place")
 
-    print "Complete.  Removed " + str(groups_removed_count) + " orphaned target groups"
+    print "Complete.  Removed " + str(groups_removed_count) + " orphaned target groups with prefix " + prefix
 
 if __name__ == "__main__":
    main(sys.argv[1:])
