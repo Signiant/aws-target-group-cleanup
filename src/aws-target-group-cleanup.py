@@ -13,7 +13,7 @@ def remove_target_group(arn, elb_client):
             TargetGroupArn=arn,
         )
     except Exception as e:
-        print("Error removing target group " + arn + " (" + str(e) + ")")
+        print(("Error removing target group " + arn + " (" + str(e) + ")"))
         sleep(0.5) # We could be throttled so we will delay here if so...
 
     if response:
@@ -36,7 +36,7 @@ def main(argv):
     args = parser.parse_args()
 
     if args.prefix:
-        print("Prefix specified - only evaluating target groups beginning with " + args.prefix)
+        print(("Prefix specified - only evaluating target groups beginning with " + args.prefix))
         prefix = args.prefix
 
     if args.force:
@@ -71,7 +71,7 @@ def main(argv):
                 if args.force:
                     request_id = remove_target_group(target_group_arn, elb_client)
                     if request_id:
-                        print("REMOVED (request id " + request_id + ")")
+                        print(("REMOVED (request id " + request_id + ")"))
                         groups_removed_count += 1
                     else:
                         print("ERROR")
@@ -79,7 +79,7 @@ def main(argv):
                 else:
                     print("DRYRUN,no deletion took place")
 
-    print "Complete.  Removed " + str(groups_removed_count) + " orphaned target groups with prefix " + prefix + " in " + str(args.region)
+    print("Complete.  Removed " + str(groups_removed_count) + " orphaned target groups with prefix " + prefix + " in " + str(args.region))
 
 if __name__ == "__main__":
    main(sys.argv[1:])
